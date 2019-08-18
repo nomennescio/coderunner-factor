@@ -13,6 +13,21 @@
 ! You should have received a copy of the GNU Lesser Public License
 ! along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-USING: continuations ;
+USING: accessors continuations debugger formatting io kernel locals math prettyprint sequences system ;
 IN: tools.testest
 
+: describe#{ ( description -- starttime ) "\n<DESCRIBE::>%s\n" printf nano-count ;
+: it#{ ( description -- starttime ) "\n<IT::>%s\n" printf nano-count ;
+: }# ( starttime -- ) nano-count swap - 1000000 / "\n<COMPLETEDIN::>%d ms\n" printf ;
+
+: passed# ( -- ) "\n<PASSED::>" print ;
+: failed# ( -- ) "\n<FAILED::>" print ;
+
+:: unit-test ( expected test -- )
+  [ { }  test with-datastack expected assert-sequence= passed# ] [ failed# error. ] recover
+;
+
+M: assert-sequence error.
+  [ "Expected :" print expected>> stack. ]
+  [ ", but got :" print got>> stack. ] bi
+;
