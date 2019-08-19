@@ -24,7 +24,8 @@ IN: tools.testest
 : failed# ( -- ) "\n<FAILED::>" print ;
 
 :: unit-test ( test expected -- )
-  [ { }  test with-datastack expected assert-sequence= passed# ] [ failed# error. ] recover
+  [ { }  test with-datastack { } expected with-datastack assert-sequence= passed# ]
+  [ failed# error. ] recover
 ;
 
 M: assert-sequence error.
