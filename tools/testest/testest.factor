@@ -23,7 +23,7 @@ IN: tools.testest
 : passed# ( -- ) "\n<PASSED::>" print ;
 : failed# ( -- ) "\n<FAILED::>" print ;
 
-:: unit-test ( expected test -- )
+:: unit-test ( test expected -- )
   [ { }  test with-datastack expected assert-sequence= passed# ] [ failed# error. ] recover
 ;
 
