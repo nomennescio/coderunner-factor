@@ -13,7 +13,8 @@
 ! You should have received a copy of the GNU Lesser Public License
 ! along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-USING: accessors continuations debugger formatting io kernel locals math prettyprint sequences system ;
+USING: accessors continuations debugger formatting io kernel locals math parser
+prettyprint quotations sequences system ;
 IN: tools.testest
 
 : describe#{ ( description -- starttime ) "\n<DESCRIBE::>%s\n" printf nano-count ;
@@ -23,7 +24,7 @@ IN: tools.testest
 : passed# ( -- ) "\n<PASSED::>" print ;
 : failed# ( -- ) "\n<FAILED::>" print ;
 
-:: unit-test ( test expected -- )
+:: (unit-test) ( test expected -- )
   [ { }  test with-datastack { } expected with-datastack assert-sequence= passed# ]
   [ failed# error. ] recover
 ;
@@ -32,3 +33,7 @@ M: assert-sequence error.
   [ "Expected :" print expected>> stack. ]
   [ ", but got :" print got>> stack. ] bi
 ;
+
+DEFER: -> delimiter
+DEFER: }> delimiter
+SYNTAX: <{ \ -> parse-until >quotation suffix! \ }> parse-until >quotation suffix! \ (unit-test) suffix! ;
