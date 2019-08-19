@@ -23,8 +23,8 @@ IN: tools.testest
 
 <PRIVATE
 
-: passed# ( -- ) "\n<PASSED::>" print ;
-: failed# ( -- ) "\n<FAILED::>" print ;
+: passed# ( -- ) "\n<PASSED::>Test Passed" print ;
+: failed# ( -- ) "\n<FAILED::>Test Failed" print ;
 
 :: (unit-test) ( test expected -- )
   [ { }  test with-datastack { } expected with-datastack assert-sequence= passed# ]
