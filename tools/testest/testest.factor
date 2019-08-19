@@ -21,6 +21,8 @@ IN: tools.testest
 : it#{ ( description -- starttime ) "\n<IT::>%s\n" printf nano-count ;
 : }# ( starttime -- ) nano-count swap - 1000000 / "\n<COMPLETEDIN::>%d ms\n" printf ;
 
+<PRIVATE
+
 : passed# ( -- ) "\n<PASSED::>" print ;
 : failed# ( -- ) "\n<FAILED::>" print ;
 
@@ -33,6 +35,8 @@ M: assert-sequence error.
   [ "Expected :" print expected>> stack. ]
   [ ", but got :" print got>> stack. ] bi
 ;
+
+PRIVATE>
 
 DEFER: -> delimiter
 DEFER: }> delimiter
