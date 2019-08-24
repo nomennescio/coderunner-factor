@@ -5,22 +5,12 @@
 
 <PASSED::>Test Passed
 
-<COMPLETEDIN::>0 ms
+<COMPLETEDIN::>0.025956 ms
 
 <IT::>Mismatch
 
-<FAILED::>Test Failed
-Expected :
-4
-5
-6
-7
-, but got :
-0
-1
-2
-3
+<FAILED::>Test Failed : Expected :<:LF:>4<:LF:>5<:LF:>6<:LF:>7<:LF:>but got :<:LF:>0<:LF:>1<:LF:>2<:LF:>3
 
-<COMPLETEDIN::>0 ms
+<COMPLETEDIN::>0.126585 ms
 
-<COMPLETEDIN::>0 ms
+<COMPLETEDIN::>0.382813 ms

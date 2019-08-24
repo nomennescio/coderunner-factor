@@ -13,27 +13,44 @@
 ! You should have received a copy of the GNU Lesser Public License
 ! along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-USING: accessors continuations debugger formatting io kernel locals math parser
+USING: accessors continuations debugger formatting io io.styles kernel locals math parser
 prettyprint quotations sequences system ;
 IN: tools.testest
 
-: describe#{ ( description -- starttime ) "\n<DESCRIBE::>%s\n" printf nano-count ;
-: it#{ ( description -- starttime ) "\n<IT::>%s\n" printf nano-count ;
-: }# ( starttime -- ) nano-count swap - 1000000 / "\n<COMPLETEDIN::>%d ms\n" printf ;
+: describe#{ ( description -- starttime ) nl "<DESCRIBE::>%s" printf nl nano-count ;
+: it#{ ( description -- starttime ) nl "<IT::>%s" printf nl nano-count ;
+: }# ( starttime -- ) nano-count swap - 1000000 / nl "<COMPLETEDIN::>%f ms" printf nl ;
+
+! line internal unformatted linefeed, to be used in single-line test result messages
+
+: lf ( -- ) "<:LF:>" write ;
+
+: seq. ( seq -- )
+  [
+    [ lf pprint-short ]
+    [ drop [ error-in-pprint ] keep write-object ]
+    recover
+  ] each
+;
+
+! user redefinable test result messages
+
+: passed. ( -- ) "Test Passed" write ;
+: failed. ( error -- ) "Test Failed : " write error. ;
+
+M: assert-sequence error.
+  [ "Expected :" write expected>> seq. ]
+  [ lf "but got :" write got>> seq. ] bi
+;
 
 <PRIVATE
 
-: passed# ( -- ) "\n<PASSED::>Test Passed" print ;
-: failed# ( -- ) "\n<FAILED::>Test Failed" print ;
+: passed# ( -- ) nl "<PASSED::>" write ;
+: failed# ( -- ) nl "<FAILED::>" write ;
 
 :: (unit-test) ( test expected -- )
-  [ { }  test with-datastack { } expected with-datastack assert-sequence= passed# ]
-  [ failed# error. ] recover
-;
-
-M: assert-sequence error.
-  [ "Expected :" print expected>> stack. ]
-  [ ", but got :" print got>> stack. ] bi
+  [ { } test with-datastack { } expected with-datastack assert-sequence= passed# passed. nl ]
+  [ failed# failed. nl ] recover
 ;
 
 PRIVATE>
