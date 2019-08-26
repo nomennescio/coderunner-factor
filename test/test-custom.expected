@@ -1,0 +1,36 @@
+
+<DESCRIBE::>custom message
+
+<IT::>short strings
+
+<PASSED::>Just passed
+
+<PASSED::>Just passed
+
+<COMPLETEDIN::>0.212197 ms
+
+<IT::>failing compares
+
+<FAILED::>Just failed
+
+<FAILED::>Just failed
+
+<COMPLETEDIN::>0.125197 ms
+
+<IT::>short strings
+
+<PASSED::>Test passed
+
+<PASSED::>Test passed
+
+<COMPLETEDIN::>0.057528 ms
+
+<IT::>failing compares
+
+<FAILED::>Actually expected :<:LF:>"Hello Worlds!"<:LF:>but instead got :<:LF:>"Hello World!"
+
+<FAILED::>Actually expected :<:LF:>"Hello Worlds! "<:LF:>but instead got :<:LF:>"Hello Worlds!"
+
+<COMPLETEDIN::>0.345956 ms
+
+<COMPLETEDIN::>1.116862 ms
