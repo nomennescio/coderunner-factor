@@ -13,8 +13,8 @@
 ! You should have received a copy of the GNU Lesser Public License
 ! along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-USING: accessors continuations debugger formatting io io.styles kernel locals math parser
-prettyprint quotations sequences system ;
+USING: accessors continuations debugger formatting io io.styles kernel locals math namespaces
+parser prettyprint quotations sequences system ;
 IN: tools.testest
 
 : describe#{ ( description -- starttime ) nl "<DESCRIBE::>%s" printf nl nano-count ;
@@ -35,15 +35,16 @@ IN: tools.testest
 
 ! user redefinable test result messages
 
-: passed. ( -- ) "Test Passed" write ;
-: failed. ( error -- ) "Test Failed : " write error. ;
+SYMBOL: test-passed.
+SYMBOL: test-failed.
 
-M: assert-sequence error.
-  [ "Expected :" write expected>> seq. ]
-  [ lf "but got :" write got>> seq. ] bi
-;
+[ "Test Passed" write ] test-passed. set-global
+[ "Test Failed : " write error. ] test-failed. set-global
 
 <PRIVATE
+
+: passed. ( -- ) test-passed. get call( -- ) ; inline
+: failed. ( error -- ) test-failed. get call( error -- ) ; inline
 
 : passed# ( -- ) nl "<PASSED::>" write ;
 : failed# ( -- ) nl "<FAILED::>" write ;
@@ -54,6 +55,11 @@ M: assert-sequence error.
 ;
 
 PRIVATE>
+
+M: assert-sequence error.
+  [ "Expected :" write expected>> seq. ]
+  [ lf "but got :" write got>> seq. ] bi
+;
 
 DEFER: -> delimiter
 DEFER: }> delimiter
